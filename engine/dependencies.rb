@@ -1,39 +1,47 @@
+# Module for linking dependent objects together
 module Dependencies
+  # Instance methods to be included when Dependecies is extended
   module DependenciesInstance
-    attr_reader :dependencies
-
-    def included base
-      @dependencies = {}
+    def self.included base
+      puts "#{base} was included by #{self}"
     end
+    # Hash of our objects links
+    attr_reader :links
 
-    def fill_dependency(tag, dependency)
+    # link the objects together
+    def link(tag, dependency)
+      @links ||= {}
       unless self.class.dependencies.include? tag
         raise ArgumentError.new("#{tag} was not found in class level dependencies!")
       end
-      @dependencies[tag] = dependency
+      @links[tag] = dependency
     end
 
+    # Has a dependency been met?
     def dependency_met? tag
-      @dependencies.include? tag
+      @links.include? tag
     end
 
+    # Have all dependencies gotten met?
     def dependencies_met?
-      self.class.dependencies.all? { |d| @dependencies.include? d }
+      self.class.dependencies.all? { |d| @links.include? d }
     end
   end
 
-  include DependenciesInstance
-
+  # List of dependencies we need to fill for each object
   attr_reader :dependencies
 
   protected
 
-  def extended(base)
-    @dependencies = []
-    super base
+  # initialize the dependencies list
+  def self.extended(base)
+    puts "#{base} was extended by #{self}"
+    base.include DependenciesInstance
   end
 
+  # Add a dependency to the list.
   def add_dependency(tag)
+    @dependencies ||= []
     @dependencies << tag
   end
 end

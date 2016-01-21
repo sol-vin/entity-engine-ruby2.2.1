@@ -1,3 +1,5 @@
+# require file to quickly require the entire library
+
 require_relative './component'
 require_relative './dependencies'
 require_relative './entity'

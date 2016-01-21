@@ -1,9 +1,12 @@
 require 'gosu'
 
+# Game window class, base of entity engine games
 class Game < Gosu::Window
   class << self
+    # Accessor to the current master window. Only one window can be open at a time.
     attr_accessor :window
 
+    # Gets an id number for objects like State, Entity, and Component
     def get_id
       @current_id ||= 0
       id = @current_id
@@ -12,12 +15,15 @@ class Game < Gosu::Window
     end
   end
 
+  # Time the game started
   attr_reader :start_time
+  # The time it was last frame
   attr_reader :last_time
+  # Current time
   attr_reader :time
+  # How many steps have been run since the game started
   attr_reader :steps
-  attr_accessor :zoom
-  attr_reader :states
+  # Currently active state
   attr_accessor :current_state
 
   def initialize(width = 800, height = 600, full_screen = false)
@@ -27,9 +33,6 @@ class Game < Gosu::Window
     @start_time = Time.now
     @time = 0
     @steps = 0
-    @current_state = State.new('blank_state')
-    @zoom = 1.0
-
     self.class.window = self
   end
 
@@ -45,6 +48,7 @@ class Game < Gosu::Window
     current_state.draw
   end
 
+  # Time between this frame and last frame
   def delta_time
     time - last_time
   end

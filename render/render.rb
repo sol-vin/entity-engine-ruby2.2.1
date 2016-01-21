@@ -1,10 +1,10 @@
 require_relative '../engine/component'
-
+require_relative '../engine/dependencies'
 class Render < Component
-  include Dependencies
+  extend Dependencies
   add_dependency :position
 
-  def initialize(name)
-    super name
+  def initialize(name, parent)
+    super(name, parent)
   end
 end

@@ -1,7 +1,11 @@
+# State class holds entities and services and attaches to a Game
 class State
+  # Include the GameObject instance methods
   include GameObject
 
+  # The list of services on this State
   attr_reader :services
+  # The list if entities on this State
   attr_reader :entities
 
   def initialize(name)
@@ -23,10 +27,10 @@ class State
     super
   end
 
+  # Add an entity to this State
   def << entity
     @entities << entity
   end
-
   alias_method :add_entity, :<<
 
   def add_service service
