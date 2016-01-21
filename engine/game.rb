@@ -2,6 +2,8 @@ require 'gosu'
 
 class Game < Gosu::Window
   class << self
+    attr_accessor :window
+
     def get_id
       @current_id ||= 0
       id = @current_id
@@ -11,10 +13,12 @@ class Game < Gosu::Window
   end
 
   attr_reader :start_time
+  attr_reader :last_time
   attr_reader :time
   attr_reader :steps
   attr_accessor :zoom
   attr_reader :states
+  attr_accessor :current_state
 
   def initialize(width = 800, height = 600, full_screen = false)
     super width, height, full_screen
@@ -23,22 +27,25 @@ class Game < Gosu::Window
     @start_time = Time.now
     @time = 0
     @steps = 0
+    @current_state = State.new('blank_state')
+    @zoom = 1.0
 
-    @states = []
+    self.class.window = self
   end
 
   #super must come at end of method for children
   def update
+    @last_time = @time
     @time += Time.now - @start_time
     @steps += 1
-    @states.each do |state|
-      state.update
-    end
+    current_state.update
   end
 
   def draw
-    @states.each do |state|
-      state.draw
-    end
+    current_state.draw
+  end
+
+  def delta_time
+    time - last_time
   end
 end

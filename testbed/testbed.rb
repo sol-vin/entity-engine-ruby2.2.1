@@ -1,4 +1,4 @@
-require_relative '../core/core'
+require_relative '../engine/engine'
 
 class TestBedGame < Game
 
