@@ -6,13 +6,18 @@ class TestBedGame < Game
     def initialize(name)
       super name
       @hello_world = Label.new(:hello_world_text, self, 'Hello World', 40)
-      puts
+    end
+
+    def update
+      Game.window.caption = "Entity Engine Game #{Game.window.fps}"
+      @hello_world.position.x += 0.1
+      @hello_world.position.y += 0.1
     end
   end
 
   def initialize
     super
-    @current_state = HelloWorldState.new(:HelloWorldState)
+    HelloWorldState.new(:HelloWorldState).show
   end
 end
 

@@ -36,4 +36,8 @@ class State
   def add_service service
     @services << service
   end
+
+  def show
+    Game.window.current_state = self
+  end
 end

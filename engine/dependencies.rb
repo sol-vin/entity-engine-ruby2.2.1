@@ -2,9 +2,6 @@
 module Dependencies
   # Instance methods to be included when Dependecies is extended
   module DependenciesInstance
-    def self.included base
-      puts "#{base} was included by #{self}"
-    end
     # Hash of our objects links
     attr_reader :links
 
@@ -35,7 +32,6 @@ module Dependencies
 
   # initialize the dependencies list
   def self.extended(base)
-    puts "#{base} was extended by #{self}"
     base.include DependenciesInstance
   end
 

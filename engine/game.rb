@@ -3,15 +3,21 @@ require 'gosu'
 # Game window class, base of entity engine games
 class Game < Gosu::Window
   class << self
-    # Accessor to the current master window. Only one window can be open at a time.
-    attr_accessor :window
-
     # Gets an id number for objects like State, Entity, and Component
     def get_id
       @current_id ||= 0
       id = @current_id
       @current_id += 1
       id
+    end
+
+    # Only one instance of the window should ever be the current window.
+    def window
+      @@window
+    end
+
+    def window= window
+      @@window = window
     end
   end
 
@@ -39,7 +45,7 @@ class Game < Gosu::Window
   #super must come at end of method for children
   def update
     @last_time = @time
-    @time += Time.now - @start_time
+    @time = Time.now - @start_time
     @steps += 1
     current_state.update
   end
@@ -51,5 +57,9 @@ class Game < Gosu::Window
   # Time between this frame and last frame
   def delta_time
     time - last_time
+  end
+
+  def fps
+    (1.0 / delta_time).round
   end
 end
