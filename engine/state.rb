@@ -37,6 +37,14 @@ class State
     @services << service
   end
 
+  def get_service service_name
+    @services.find {|s| s.class.to_s.to_sym == service_name}
+  end
+
+  def [] entity_name
+    @entities.find {|e| e.name == entity_name}
+  end
+
   def show
     Game.window.current_state = self
   end
